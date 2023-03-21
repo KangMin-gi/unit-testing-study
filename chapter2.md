@@ -44,24 +44,24 @@
 
 ### 2.2.1 고전파와 런던파가 의존성을 다루는 방법
 ```kotlin
-@Test
-    fun `Purchase fails when not enough inventory`() {
+  @Test
+  fun `Purchase fails when not enough inventory`() {
 
-        // Arrange
-        val storeMock = spyk(Store())
-        every { storeMock.hasEnoughInventory(Product.Shampoo, 5) } returns false
-        val customer = Customer()
+      // Arrange
+      val storeMock = spyk(Store())
+      every { storeMock.hasEnoughInventory(Product.Shampoo, 5) } returns false
+      val customer = Customer()
 
-        // Act
-        val success: Boolean = customer.purchase(storeMock, Product.Shampoo, 5)
+      // Act
+      val success: Boolean = customer.purchase(storeMock, Product.Shampoo, 5)
 
-        // Assert
-        assertFalse(success)
-        verify(exactly = 0) {
-            storeMock.removeInventory(Product.Shampoo, 5)
-        }
+      // Assert
+      assertFalse(success)
+      verify(exactly = 0) {
+          storeMock.removeInventory(Product.Shampoo, 5)
+      }
 
-    }
+  }
 ```
 * customer 의 의존성 2가지 - Store, Product
   * Store: 시간에 따라 변할 수 있는 내부 상태 포함 => 교체!
@@ -86,3 +86,36 @@
   * 공유 의존성 O 프로세스 외부 의존성 O: 데이터베이스 (<-변경 가능)
   * 공유 의존성 X 프로세스 외부 의존성 O : 읽기 전용 API 서비스 (<-불변)
   * 공유 의존성 X 프로세스 외부 의존성 O : 실제 프로젝트에서 거의 없다.
+
+## 2.3 고전파와 런던파의 비교
+* 목을 사용하는 테스트는 고전적인 테스트보다 불안정한 경향이 있다. 필자는 개인적으로 고전파를 선호한다고 한다.
+* 런던파의 장점
+  * 입자성이 좋다. 테스트가 세밀해서 한 번에 한 클래스만 확인한다.
+  * 서로 연결된 클래스의 그래프가 커져도 테스트하기 쉽다. 모든 협력자는 테스트 대역으로 대체되기 때문에 테스트 작성 시 걱정할 필요가 없다.
+  * 테스트가 실패하면 어떤 기능이 실패했는지 확실히 알 수 있다. 클래스의 협력자가 없으면 테스트 대상 클래스 외에 다른 것을 의심할 여지가 없다.
+
+### 2.3.1 한 번에 한 클래스만 테스트하기
+* 런던파는 클래스 단위로 단위 테스트를 한다.
+* 하지만 테스트는 코드의 단위가 아닌 동작의 단위를 검증해야 한다. 즉, 단위는 여러 클래스에 걸쳐 있거나 한 클래스에만 있거나 아주 작은 메서드가 될 수도 있다.
+* 프로그래머가 아닌 비즈니스 담당자에게 의미가 있는 동작을 단위로 테스트 해야한다.
+
+### 2.3.2 상호 연결된 클래스의 큰 그래프를 단위 테스트하기
+* 의존성 그래프가 복잡할 때 목을 사용하면 테스트가 쉽다. (런던파)
+* 고전파처럼 테스트 대상 시스템을 설정하려면 전체 객체 그래프를 다시 생성해야 하고, 이는 작업이 많을 수 있다.
+* 하지만, 먼저 복잡한 그래프를 갖지 않는 것에 집중해야 한다. 클래스 그래프가 커진 것은 코드 설계 문제이다.
+
+### 2.3.3 버그 위치 정확히 찾아내기
+* 런던 스타일 테스트를 사용하면 SUT에 버그가 포함된 테스트만 실패하지만, 고전적인 방식이면 전체 시스템에 걸쳐 테스트 실패를 야기할 수 있다.
+* 고전적인 방식의 이러한 문제점을 해결하기 위해서는 테스트를 정기적으로(이상적으로는 소스 코드가 변경될 때마다) 실행하면 버그의 원인을 알아낼 수 있다.
+* 테스트 스위트 전체에 걸쳐 실패하는 것도 의미가 있다. 그만큼 중요한 부분에 버그가 있다는 뜻이기 때문.
+
+### 2.3.4 고전파와 런던파 사이의 다른 차이점
+* 테스트 주도 개발을 통한 시스템 설계 방식
+  * 테스트 주도 개발의 3단계
+    1. 추가해야 할 기능과 어떻게 동작해야 하는지를 나타내는 실패 테스트를 작성한다.
+    2. 테스트가 통과할 만큼 충분히 코드를 작성한다. 이 단계에서 코드가 깨끗하거나 명쾌할 필요는 없다.
+    3. 코드를 리팩터링한다. 통과 테스트 보호하에서 코드를 안전하게 정리해 좀 더 읽기 쉽고 유지하기 쉽도록 만들 수 있다.
+  * 런던파: 하향식 TDD. 협력자 지정 -> 협력자를 목킹해서 협력자의 구현을 나중으로 미룸
+  * 고전파: 상향식 TDD. 도메인 모델부터 시작한다.
+* 과도한 명세 문제
+  * 런던파가 고전파보다 테스트가 구현에 자주 결합되는 편이다.
