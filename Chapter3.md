@@ -12,6 +12,7 @@
 
 ```java
 public class CalculatorTest {
+  @Test
   public void Sum_of_two_numbers() {
     // arrange
     double first=10;
@@ -58,6 +59,7 @@ TDD 같은 경우, 검증 구절부터 시작할 수 있다.
 
 ```java
 public class CalculatorTest {
+  @Test
   public void Sum_of_two_numbers() {
     // arrange
     double first=10;
@@ -115,13 +117,15 @@ public class CalculatorTest {
 - 보통 테스트 하나로 동작 단위를 완전하게 설명하기 충분하지 않다.
 - 매개변수화된 테스트를 사용해 유사한 테스트를 묶을 수 있다.
 
-```c#
+```java
 public class DeliveryServiceTests {
-  [InlineData(-1, false)]
-  [InlineData(0, false)]
-  [InlineData(1, false)]
-  [InlineData(2, true)]
-  [Theory]
+  @ParameterizedTest
+  @CsvSource({
+        "-1,false",
+        "0,false",
+        "1,false",
+        "2,true",
+  })
   public void Can_detect_an_invalid_delivery_date(
     int daysFromNow,
     bool expected) {
@@ -138,16 +142,18 @@ public class DeliveryServiceTests {
 
 - 매개변수화된 테스트를 사용하면 테스트 코드의 양을 크게 줄일 수 있지만, 테스트 메서드가 나타내는 사실을 파악하기 어렵다.
 - 긍정/부정적인 테스크 케이스를 나누거나 동작이 너무 복잡하면 매개변수화된 테스트를 사용하지 않는다.
+- JUnit의 경우, JUnit Jupiter Params 의존성 추가 필요
 
 ## Fluent Assertions 사용
 
-```c#
+```java
+@Test
 public void Sum_of_two_numbers() {
   Calculator sut = new Calculator();
   
   double result = sut.Sum(10, 20);
   
-  result.Should().Be(30);
+  assertTaht(result, is(30));
 }
 ```
 
