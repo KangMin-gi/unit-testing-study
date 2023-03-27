@@ -23,7 +23,7 @@ public class CalculatorTest {
     double result = calculator.Sum(first, second);
     
     // assert
-    Assert.Equal(30, result);
+    Assertions.assertEquals(30, result);
   }
 }
 ```
@@ -70,7 +70,7 @@ public class CalculatorTest {
     double result = sut.Sum(first, second);
     
     // assert
-    Assert.Equal(30, result);
+    Assertions.assertEquals(30, result);
   }
 }
 ```
@@ -128,14 +128,14 @@ public class DeliveryServiceTests {
   })
   public void Can_detect_an_invalid_delivery_date(
     int daysFromNow,
-    bool expected) {
+    boolean expected) {
     DeliveryService sut = new DeliveryService();
     DateTime deliveryDate = DateTime.Now.AddDays(daysFromNow);
     Delivery delivery = new Delivery { Date = deliveryDate };
     
     bool isValid = sut.IsDeliveryValid(delivery);
     
-    Assert.Equal(expected, isValid);
+    Assertions.assertEquals(expected, isValid);
   }
 }
 ```
@@ -153,7 +153,7 @@ public void Sum_of_two_numbers() {
   
   double result = sut.Sum(10, 20);
   
-  assertTaht(result, is(30));
+  assertThat(result, is(30));
 }
 ```
 
