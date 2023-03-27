@@ -22,16 +22,53 @@
     - 테스트 대상 시스템과 하나의 협력자 준비
   - 실행 : 검증하고자 하는 동작을 수행
   - 검증 : 검증문을 호출하여 동작이 예상 결과로 이어지는지 확인
-  - 고전파 예제
-    - 의존성이 격리 되어 있지 않아 테스트 대상 시스템이 정상이더라도 협력자에 버그가 있으면 단위 테스트 실패
+
+```java
+@Test
+public void Purchase_succees_when_enough_inventory() {
+  Store store = new Store();
+  store.AddInventory(Product.Shampoo, 10);
+  Customer customer = new Customer();
+  
+  bool success = customer.Purchase(store, Product.Shampoo, 5);
+  
+  Assertions.assertTrue(success);
+  Assertions.assertEquals(5, store.GetInventory(Product.Shampoo));
+}
+
+public enum Product {
+  Shampoo,
+  Book
+}
+```
+
+의존성이 격리 되어 있지 않아 테스트 대상 시스템이 정상이더라도 협력자에 버그가 있으면 단위 테스트 실패
 
 런던파
   - 목 : 테스트 대상 시스템과 협력자 간의 상호 작용을 검사할 수 있는 특별한 테스트 대역
     - 테스트 대역은 실행과 관련 없이 모든 종류의 가짜 의존성을 설명하는 포괄적인 용어
     - 목은 그러한 의존성의 한 종류
-      - 런던파 예제
       - 협력자에서 격리된 테스트 대상 시스템에는 인터페이스가 필요(구체 클래스도 목으로 만들 수 있지만 안티 패턴)
       - 런던 스타일 : 테스트 대역으로 테스트 대상 코드 조각을 분리해서 격리 요구 사항에 다가간다.
+
+```java
+@Test
+public void Purchase_succees_when_enough_inventory() {
+  Store storeMock = mock(IStore.class);
+  when(storeMock.HasEnoughInventory(Product.Shampoo, 5)).thenReturn(true)
+  Customer customer = new Customer();
+  
+  bool success = customer.Purchase(store, Product.Shampoo, 5);
+  
+  Assertions.assertTrue(success);
+  verify(storeMock).HasEnoughInventory();
+}
+
+public enum Product {
+  Shampoo,
+  Book
+}
+```
 
 ## 공유 의존성, 비공개 의존성, 휘발성 의존성 간의 차이점
 
