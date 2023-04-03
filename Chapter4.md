@@ -92,12 +92,12 @@ public class MessageRenderer implements IRenderer {
 public void MessageRenderer_uses_correct_sub_renderers() {
 	MessageRenderer sut = new MessageRenderer();
 
-  List<IRenderer> renderers = sut.subRenderers;
+	List<IRenderer> renderers = sut.subRenderers;
 
-  Assert.assertEquals(3, renderers.size());
-  Assert.assertTrue(renderers.get(0) instanceof HeaderRenderer);
-  Assert.assertTrue(renderers.get(1) instanceof BodyRenderer);
-  Assert.assertTrue(renderers.get(2) instanceof FooterRenderer);
+	Assert.assertEquals(3, renderers.size());
+	Assert.assertTrue(renderers.get(0) instanceof HeaderRenderer);
+	Assert.assertTrue(renderers.get(1) instanceof BodyRenderer);
+	Assert.assertTrue(renderers.get(2) instanceof FooterRenderer);
 }
 ```
 
