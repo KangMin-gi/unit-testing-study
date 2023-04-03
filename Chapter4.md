@@ -72,14 +72,17 @@ public class MessageRenderer implements IRenderer {
 	public List<IRenderer> subRenderers;
 
 	public MessageRenderer() {
-		subRenderers = new List<IRenderer>;
+		subRenderers = new ArrayList<>();
 		subRenderers.add(new HeaderRenderer());
 		subRenderers.add(new BodyRenderer());
 		subRenderers.add(new FooterRenderer());
 	}
 
+  @Override
 	public String render(Message message) {
-		return subRenderers.stream().map(l -> l.Render(message)).collect();
+		return subRenderers.stream()
+                .map(l -> l.render(message))
+                .collect(Collectors.joining());
 	}
 }
 ```
@@ -87,14 +90,14 @@ public class MessageRenderer implements IRenderer {
 ```java
 @Test
 public void MessageRenderer_uses_correct_sub_renderers() {
-	IRenderer sut = new MessageRenderer();
+	MessageRenderer sut = new MessageRenderer();
 
-	List<IRenderer> renderers = sut.subRenderers;
+  List<IRenderer> renderers = sut.subRenderers;
 
-	Assert.Equal(3, renderers.size());
-	**Assert.IsAssignableFrom<HeaderRenderer>(renderers[0]);
-	Assert.IsAssignableFrom<BodyRenderer>(renderers[1]);
-	Assert.IsAssignableFrom<FooterRenderer>(renderers[2]);**
+  Assert.assertEquals(3, renderers.size());
+  Assert.assertTrue(renderers.get(0) instanceof HeaderRenderer);
+  Assert.assertTrue(renderers.get(1) instanceof BodyRenderer);
+  Assert.assertTrue(renderers.get(2) instanceof FooterRenderer);
 }
 ```
 
