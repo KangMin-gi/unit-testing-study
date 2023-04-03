@@ -98,7 +98,7 @@ public void MessageRenderer_uses_correct_sub_renderers() {
 }
 ```
 
-![스크린샷 2023-03-31 오후 8.18.05.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7d0931f0-36b3-4905-a139-fa4080bf7a47/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-03-31_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_8.18.05.png)
+<img width="444" alt="스크린샷 2023-03-31 오후 8 18 05" src="https://user-images.githubusercontent.com/7659412/229492656-0b53a387-1a2e-4f69-8956-92255d9db792.png">
 
 SUT 알고리즘과 테스트가 결합되어 있어 깨지기 쉽다.
 
@@ -122,13 +122,13 @@ public void Rendering_a_message() {
 }
 ```
 
-![스크린샷 2023-03-31 오후 8.20.57.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e74f8167-4c83-4c05-b531-f56c59dfdbdd/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-03-31_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_8.20.57.png)
+<img width="469" alt="스크린샷 2023-03-31 오후 8 20 57" src="https://user-images.githubusercontent.com/7659412/229492829-eb777a4e-d932-4bf5-a194-caf1b6ba1c1c.png">
 
 ### 첫 번째 특성과 두 번째 특성 간의 본질적인 관계
 
 **테스트 정확도 극대화**
 
-![스크린샷 2023-03-31 오후 8.25.25.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/742b01dc-64eb-4f00-a3a1-6b61106f6ebd/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-03-31_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_8.25.25.png)
+<img width="411" alt="스크린샷 2023-03-31 오후 8 25 25" src="https://user-images.githubusercontent.com/7659412/229492856-b29788c3-6625-4c3d-97f1-8c15afd88ad7.png">
 
 회귀 방지가 훌륭한 테스트는 2종 오류인 거짓 음성의 수를 최소화
 
@@ -137,11 +137,11 @@ public void Rendering_a_message() {
 - 테스트가 버그 있음을 얼마나 잘 나타내는가? - 거짓 음성 제외
 - 테스트가 버그 없음을 얼마나 잘 나타내는가? - 거짓 양성 제외
 
-![스크린샷 2023-03-31 오후 8.29.29.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f09a6c29-98b0-4261-865c-6125f5f34363/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-03-31_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_8.29.29.png)
+<img width="266" alt="스크린샷 2023-03-31 오후 8 29 29" src="https://user-images.githubusercontent.com/7659412/229492885-f786195f-9f41-4684-a3c9-89b5606f3733.png">
 
 **거짓 양성과 거짓 음성의 중요성**
 
-![스크린샷 2023-03-31 오후 8.31.39.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7b155e8d-1630-438a-bf0e-57acc73752a3/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-03-31_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_8.31.39.png)
+<img width="326" alt="스크린샷 2023-03-31 오후 8 31 39" src="https://user-images.githubusercontent.com/7659412/229492922-a67ad0be-cbcd-403e-9100-e5a435e8750a.png">
 
 프로젝트 초기에는 리팩터링이 많이 필요 없어 거짓 양성이 그렇게 크게 중요하지 않다.
 
@@ -171,7 +171,7 @@ public void Rendering_a_message() {
 - 회귀 방지, 리팩터링 내성, 빠른 피드백은 상호 배타적이기 때문이다.
 - 셋 중에 하나는 희생해야 한다.
 
-![스크린샷 2023-03-31 오후 8.36.01.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/61a7c1d0-643c-425d-bc0b-9f4de95f81b5/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-03-31_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_8.36.01.png)
+<img width="489" alt="스크린샷 2023-03-31 오후 8 36 01" src="https://user-images.githubusercontent.com/7659412/229492949-e3538950-83c1-4c4f-bd40-d70af8863077.png">
 
 1. 엔드 투 엔드 테스트
     1. 최종 사용자의 관점에서 시스템을 테스트한다.
@@ -188,23 +188,22 @@ public void Rendering_a_message() {
 4. 이상적인 테스트 : 결론
     1. 리팩터링 내성을 포기할 수는 없다. 테스트가 이 특성을 갖고 있는지 여부는 대부분 이진 선택이기 때문에
     2. 회귀 방지와 빠른 피드백 사이에서 자유롭게 움직인다.
-        
-        ![스크린샷 2023-03-31 오후 8.37.21.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/876be50a-5c1a-46b1-8025-216b1f900d4c/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-03-31_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_8.37.21.png)
-        
+
+<img width="360" alt="스크린샷 2023-03-31 오후 8 37 21" src="https://user-images.githubusercontent.com/7659412/229492996-846ea5d2-53ff-4325-8f3b-1d2276e5589e.png">       
 
 ## 대중적인 테스트 자동화 개념 살펴보기
 
 - 테스트 피라미드
-    
-    ![스크린샷 2023-03-31 오후 8.36.59.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/aec8350f-fd26-485e-9461-19e518ce074b/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-03-31_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_8.36.59.png)
-    
+
+<img width="333" alt="스크린샷 2023-03-31 오후 8 36 59" src="https://user-images.githubusercontent.com/7659412/229493016-078830ea-b806-4b2b-8499-acad037438d6.png"> 
+
     - 테스트 스위트에서 테스트 유형 간의 일정한 비율
     - 각 층의 너비는 테스트 스위트에서 해당 테스트가 얼마나 보편적인지(넓을수록 해당 테스트는 많다.)
     - 층의 높이는 이러한 테스트가 최종 사용자의 동작을 얼마나 유사하게 흉내 내는지 나타내는 척도
     - 피라미드 상단의 테스트는 회귀 방지에 유리하고, 하단은 실행 속도를 강조한다.
     - 일반적으로 테스트 유형 간의 정확한 비율은 피라미트 형태를 유지
-        
-        ![스크린샷 2023-03-31 오후 8.38.07.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2a2ee35c-b40a-4f1f-bd6b-9ef2e64fc1f6/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-03-31_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_8.38.07.png)
+
+<img width="345" alt="스크린샷 2023-03-31 오후 8 38 07" src="https://user-images.githubusercontent.com/7659412/229493044-1a41e4b7-7fa1-4d29-9628-3314968f0abb.png">
         
 - 화이트박스 테스트 대 블랙박스 테스트
     - 블랙박스 테스트
