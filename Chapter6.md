@@ -12,8 +12,8 @@
 
 ```java
 public class PriceEngine {
-	public int calculateDiscount(Product[] products[]) {
-		int discount = products.length * 0.01;
+	public double calculateDiscount(Product[] products[]) {
+		double discount = products.length * 0.01;
 		return Math.min(discount, 0.2);
 	}
 }
@@ -21,12 +21,12 @@ public class PriceEngine {
 @Test
 public void discount_of_two_products() {
 	Product product1 = new Product("Hand wash");
-	Product product2 = new Product("Shampoo");
-	PriceEngin sut = new PriceEngine();
+  Product product2 = new Product("Shampoo");
+  PriceEngine sut = new PriceEngine();
 
-	int discount = sut.calculateDiscount(product1, product2);
+  double discount = sut.calculateDiscount(product1, product2);
 
-	Assert.Equal(0.02, discount);
+  Assertions.assertEquals(0.02, discount);
 }
 ```
 
@@ -40,23 +40,22 @@ public void discount_of_two_products() {
 
 ```java
 public class Order {
-	private readonly List<Product> _products = new List<Product>();
-	public IReadOnlyList<Product> products = _products.toList();
+	private final List<Product> products = new ArrayList<>();
 
-	public void addProduct(Product product) {
-		_products.add(product);
-	}
+  public void addProduct(Product product) {
+    products.add(product);
+  }
 }
 
 @Test
 public void adding_a_product_to_an_order() {
-	Product product = new Product("Hand wash');
-	Order sut = new Order();
+  Product product = new Product("Hand wash");
+  Order sut = new Order();
 
-	sut.addProduct(product);
+  sut.addProduct(product);
 
-	Assert.Equal(1, sut.products.count);
-	Assert.Equal(product, sut.products[0]);
+  Assertions.assertEquals(1, sut.getProducts().size());
+  Assertions.assertEquals(product, sut.getProducts().get(0));
 }
 ```
 
@@ -76,7 +75,7 @@ public void sending_a_greetings_email() {
 	sut.greetUser("user@gmail.com");
 
 	Mockito.verify(mock, Mockito.times(1))
-					.sendGreetingEmail("user@gmail.com");
+		.sendGreetingEmail("user@gmail.com");
 }
 ```
 
@@ -130,22 +129,22 @@ public void sending_a_greetings_email() {
 - 상태 기반 테스트의 유지보수성
     - 상태 검증은 종종 출력 검증보다 더 많은 공간을 차지하기 때문에 출력 기반 테스트보다 유지 보수가 쉽지 않다.
     
-    ```java
-    @Test
-    public void adding_a_comment_to_an_article() {
-    	Article sut = new Article();
-    	String text = "Comment text";
-    	String author = "John Doe";
-    	LocalDateTime now = new LocalDateTime(2019, 4, 1);
-    
-    	sut.addComment(text, author, now);
-    
-    	Assert.Equal(1, sut.comments.count);
-    	Assert.Equal(text, sut.comments[0].text);
-    	Assert.Equal(author, sut.comments[0].author);
-    	Assert.Equal(now, sut.comments[0].dateCreated);
-    }
-    ```
+	```java
+	@Test
+	public void adding_a_comment_to_an_article() {
+		Article sut = new Article();
+		String text = "Comment text";
+		String author = "John Doe";
+		LocalDate now = LocalDate.of(2019, 4, 1);
+
+		sut.addComment(text, author, now);
+
+		Assertions.assertEquals(1, sut.getComments().size());
+	  Assertions.assertEquals(text, sut.getComments().get(0).getText());
+	  Assertions.assertEquals(author, sut.getComments().get(0).getAuthor());
+	  Assertions.assertEquals(now, sut.getComments().get(0).getDateCreated());
+	}
+	```
     
     - 상태 기반 테스트는 많은 데이터를 확인해야 하므로 크기가 커질 수 있다.
         - 헬퍼 메서드로 문제를 완화할 수 있지만, 이러한 메서드를 작성하고 유지하는 데 상당한 노력이 필요
@@ -177,8 +176,8 @@ public void sending_a_greetings_email() {
 - 수학적 함수는 호출 횟수에 상관없이 주어진 입력에 대해 동일한 출력을 생성
 
 ```java
-public int calculateDiscount(Product[] products[]) {
-	int discount = products.length * 0.01;
+public double calculateDiscount(Product[] products[]) {
+	double discount = products.length * 0.01;
 	return Math.min(discount, 0.2);
 }
 ```
@@ -218,7 +217,7 @@ int y = 5;
 ```java
 public Comment addComment(String text) {
 	Comment comment = new Comment(text);
-	**_comments.add(comment); // 사이드 이펙트**
+	_comments.add(comment); // 사이드 이펙트
 	return comment;
 }
 ```
@@ -264,8 +263,8 @@ public class AuditManager {
 	private readonly int _maxEntriesPerFile;
 	private readonly String _directoryName;
 
-	public AuditManager(int maxEntriesPerFile, int directoryName) {
-		_maxEntriesPerFile = maxEntriesPerFile
+	public AuditManager(int maxEntriesPerFile, String directoryName) {
+		_maxEntriesPerFile = maxEntriesPerFile;
 		_directoryName = directoryName;
 	}
 
@@ -276,32 +275,33 @@ public class AuditManager {
 		String newRecord = visitorName + ";" + timeOfVisit;
 
 		if(sorted.length == 0) {
-			String newFile = Path.combile(_directoryName, "audit_1.txt");
+			String newFile = Path.combine(_directoryName, "audit_1.txt");
 			File.writeAllText(newFile, newRecord);
 			return;
 		}
 
 		(int currentFileIndex, String currentFilePath) = sorted.last();
-		List<String> lines = File.ReadAllLines(currentFilePath).toList();
+		List<String> lines = File.readAllLines(currentFilePath).toList();
 
 		if(lines.count < _maxEntriesPerFile) {
 			lines.add(newRecord);
 			String newContent = lines.join("\r\n");
 			File.writeAllText(currentFilePath, newContent);
 		} else {
-			int nexIndex = currentFileIndex + 1;
+			int newIndex = currentFileIndex + 1;
 			String newName = $"audit_{newIndex}.txt";
-			String newFile = Path.combile(_directoryName, newName);
+			String newFile = Path.combine(_directoryName, newName);
 			File.writeAllText(newFile, newRecord);
 		}
 	}
 }
 ```
 
-- 작업 디렉터리에서 전체 파일 목록을 검색한다.
-- 인덱스 별로 정렬한다.
-- 아직 감사 파일이 없으면 단일 레코드로 첫 번째 파일을 생성한다.
-- 감사 파일이 있으면 최신 파일을 가져와서 파일의 항목 수가 한계에 도달했는지에 따라 새 레코드를 추가하거나 새 파일을 생성한다.
+- 감사 애플리케이션 동작 과정
+    - 작업 디렉터리에서 전체 파일 목록을 검색한다.
+    - 인덱스 별로 정렬한다.
+    - 아직 감사 파일이 없으면 단일 레코드로 첫 번째 파일을 생성한다.
+    - 감사 파일이 있으면 최신 파일을 가져와서 파일의 항목 수가 한계에 도달했는지에 따라 새 레코드를 추가하거나 새 파일을 생성한다.
 
 |  | 초기 버전 |
 | --- | --- |
@@ -312,9 +312,11 @@ public class AuditManager {
 
 파일 시스템이 공유 의존성이기 때문에 그대로 테스트하기가 어렵고 테스트를 느리게 한다.
 
+로컬 시스템과 빌드 서버 모두 작업 디렉터리가 있고 테스트할 수 있어야 하므로 유지 보수성도 저하된다.
+
 ### 테스트를 파일 시스템에서 분리하기 위한 목 사용
 
-- 테스트가 밀접하게 결합된 문제는 일반적으로 파일 시스템을 목으로 처리해서 해결
+- 테스트가 파일 시스템과 밀접하게 결합된 문제는 일반적으로 파일 시스템을 목으로 처리해서 해결
 
 ```java
 public interface IFileSystem {
@@ -341,7 +343,7 @@ public class AuditManager {
 		String newRecord = visitorName + ";" + timeOfVisit;
 	
 		if(sorted.length == 0) {
-			String newFile = Path.combile(_directoryName, "audit_1.txt");
+			String newFile = Path.combine(_directoryName, "audit_1.txt");
 			_fileSystem.writeAllText(newFile, newRecord);
 			return;
 		}
@@ -354,9 +356,9 @@ public class AuditManager {
 			String newContent = lines.join("\r\n");
 			_fileSystem.writeAllText(currentFilePath, newContent);
 		} else {
-			int nexIndex = currentFileIndex + 1;
+			int newIndex = currentFileIndex + 1;
 			String newName = $"audit_{newIndex}.txt";
-			String newFile = Path.combile(_directoryName, newName);
+			String newFile = Path.combine(_directoryName, newName);
 			_fileSystem.writeAllText(newFile, newRecord);
 		}
 	}
@@ -432,7 +434,7 @@ public class AuditManager {
 			String newContent = lines.join("\r\n");
 			return new FileUpdate(currentFile.fileName, newContent);
 		} else {
-			int nexIndex = currentFileIndex + 1;
+			int newIndex = currentFileIndex + 1;
 			String newName = $"audit_{newIndex}.txt";
 			return new FileUpdate(newName, newRecord);
 		}
@@ -462,8 +464,13 @@ public class FileUpdate {
 public class Persister {
 	public FileContent[] readDirectory(String directoryName) {
 		return Directory.getFiles(directoryName)
-										.select(x => new FileContent(Path.getFileName(x), File.readAllLines(x)))
-										.toArray();
+				.select(x => new FileContent(Path.getFileName(x), File.readAllLines(x)))
+				.toArray();
+	}
+
+	public void applyUpdate(String directoryName, FileUpdate update) {
+		String filePath = Path.combine(directoryName, update.fileName);
+		File.writeAllText(filePath, update.newContent);
 	}
 }
 
@@ -486,7 +493,11 @@ public class ApplicationService {
 }
 ```
 
-Persister는 가변 셸, AuditManager는 함수형 코어
+사이드 이펙트를 클래스 외부로 완전히 이동시킨다.
+
+- AuditManager(함수형 코어)는 파일에 수행할 작업을 둘러싼 결정만 책임
+- Persister(가변 셸)은 결정에 따라 파일 시스템에 업데이트를 적용
+- ApplicationService는 함수형 코어와 가변 셸을 붙이면서 외부 클라이언트를 위한 시스템의 진입점 제공
 
 ```java
 @Test
@@ -547,8 +558,7 @@ public (FileUpdate update, Error error) addRecord(FileContent[] files, String vi
 레코드를 저장할 때 접근 레벨을 체크하기 때문에 함수에 숨은 입력이 생긴다.
 
 ```java
-public FileUpdate addRecord(FileContent[] files, String visitorName,
-														DateTime timeOfVisit, **IDatabase database**)
+public FileUpdate addRecord(FileContent[] files, String visitorName, DateTime timeOfVisit, **IDatabase database**)
 ```
 
 **해결책**
