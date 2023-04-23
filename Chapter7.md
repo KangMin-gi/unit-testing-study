@@ -48,8 +48,8 @@
 - 도메인 모델과 알고리즘
     - 보통 복잡한 코드는 도메인 모델이지만, 문제 도메인과 직접적으로 관련이 없는 복잡한 알고리즘이 있을 수 있어 100%는 아니다.
     - 단위 테스트를 작성하면 노력 대비 가장 가치있고 저렴하다.
-    - 코드가 복잡하거나 중요한 로직을 수행해서 테스트의 회귀 방지가 향상되기 때문에 가치 있다.
-    - 코드에 협력자가 거의 없어서 테스트 유지비를 낮추기 때문에 저렴하다.
+      - 코드가 복잡하거나 중요한 로직을 수행해서 테스트의 회귀 방지가 향상되기 때문에 가치 있다.
+      - 코드에 협력자가 거의 없어서 테스트 유지비를 낮추기 때문에 저렴하다.
 - 간단한 코드
     - 매개변수가 없는 생성자 또는 한 줄 속성 등
     - 협력자가 있는 경우가 거의 없고 복잡도나 도메인 유의성도 거의 없다.
@@ -70,13 +70,13 @@
 
 지나치게 복잡한 코드를 분할하려면 **험블 객체 패턴**을 사용한다.
 
-코드가 비동기 또는 멀티 스레드 실행, 사용자 인터페이스, 프로세스 외부 의존성과의 통신 등 프레임워크 의존성에 결합되어 있으면 테스트가 어렵다.
+- 코드가 비동기 또는 멀티 스레드 실행, 사용자 인터페이스, 프로세스 외부 의존성과의 통신 등 프레임워크 의존성에 결합되어 있으면 테스트가 어렵다.
 
-테스트 대상 코드의 로직을 테스트 하려면 테스트가 가능한 부분을 추출해야 한다.
+- 테스트 대상 코드의 로직을 테스트 하려면 테스트가 가능한 부분을 추출해야 한다.
 
-코드는 테스트 가능한 부분을 둘러싼 얇은 험블 래퍼가 된다.
+- 코드는 테스트 가능한 부분을 둘러싼 얇은 험블 래퍼가 된다.
 
-험블 래퍼가 테스트하기 어려운 의존성과 새로 추출된 구성 요소를 붙이지만 자체적인 로직이 거의 없거나 전혀 없으므로 테스트할 필요가 없다.
+- 험블 래퍼가 테스트하기 어려운 의존성과 새로 추출된 구성 요소를 붙이지만 자체적인 로직이 거의 없거나 전혀 없으므로 테스트할 필요가 없다.
 
 <img width="653" alt="스크린샷 2023-04-21 오후 8 53 19" src="https://user-images.githubusercontent.com/7659412/233800277-11398307-ba64-4d0d-8d62-dabb0a1e6bc3.png">
 
@@ -91,9 +91,9 @@
 
 험블 객체 패턴을 보는 또 다른 방법은 **단일 책임 원칙**을 지키는 것이다.
 
-단일 책임 원칙은 각 클래스가 단일한 책임만 가져야 한다는 원칙이다.
+- 단일 책임 원칙은 각 클래스가 단일한 책임만 가져야 한다는 원칙이다.
 
-험블 객체 패턴을 적용하면 비즈니스 로직을 거의 모든 것과 분리할 수 있다.
+- 험블 객체 패턴을 적용하면 비즈니스 로직을 거의 모든 것과 분리할 수 있다.
 
 - MVC, MVP 패턴
     - 비즈니스 로직(모델)과 UI 관심사(뷰) 그리고 모델과 뷰 사이의 조정(프리젠터 또는 컨트롤러)을 분리하는데 도움이 된다.
@@ -103,7 +103,7 @@
     - 클래스는 해당 클러스터 내부에서 강결합돼 있지만, 클러스터 자체는 느슨하게 결합돼 있다.
     - 코드베이스의 총 통신 수를 줄여 연결이 줄어들고 테스트 용이성이 향상 된다.
 
-비즈니스 로직과 오케스트레이션을 분리하면 테스트 용이성도 좋아지고 코드 복잡도도 해결할 수 있어 프로젝트 성장에 중요한 역할을 한다.
+- 비즈니스 로직과 오케스트레이션을 분리하면 테스트 용이성도 좋아지고 코드 복잡도도 해결할 수 있어 프로젝트 성장에 중요한 역할을 한다.
 
 # 2. 가치 있는 단위 테스트를 위한 리팩터링하기
 
@@ -246,8 +246,8 @@ User 클래스는 더 이상 프로세스 외부 의존성과 통신할 필요�
 문제점
 
 - 프로세스 외부 의존성이 주입되지 않고 직접 인스턴스화 된다. 이 클래스를 위해 작성할 통합 테스트에서 문제가 된다.
-- 컨트롤러는 데이터베이스에서 받은 원시 데이터를 User 인스턴스로 재구성한다. 이는 복잡한 로직이므로 애플리케이션 서비스에 속하면 안된다. 애플리케이션 서비스의 역할은 복잡도나 도메인 유의성 로직이 아니라 오케스트레이션만 해당한다.
-- 회사 데이터도 마찬가지다. User는 이제 업데이트된 직원 수를 반환하는데, 이 부분이 이상하다. 회사 직원 수는 특정 사용자와 관련 없다. 이 책임은 다른 곳에 있어야 한다.
+- 컨트롤러는 데이터베이스에서 받은 원시 데이터를 User 인스턴스로 재구성한다.이는 복잡한 로직이므로 애플리케이션 서비스에 속하면 안된다. 애플리케이션 서비스의 역할은 복잡도나 도메인 유의성 로직이 아니라 오케스트레이션만 해당한다.
+- User는 이제 업데이트된 직원 수를 반환하는데 회사 직원 수는 특정 사용자와 관련 없다.
 - 컨트롤러는 새로운 이메일이 전과 다른지 여부와 관계없이 무조건 데이터를 수정해서 저장하고 메시지 버스에 알림을 보낸다.
 
 <img width="534" alt="스크린샷 2023-04-21 오후 9 48 02" src="https://user-images.githubusercontent.com/7659412/233800293-78542d91-8d73-4417-897d-abb36351ffe4.png">
@@ -261,7 +261,7 @@ User 클래스는 더 이상 프로세스 외부 의존성과 통신할 필요�
 ```java
 public class UserFactory {
 	public static User create(Object[] data) {
-		Assert.require(data.length >= 3);
+		Assert.isTrue(data.length >= 3);
 
 		int id = (int)data[0];
 		String email = (String)data[1];
@@ -286,7 +286,7 @@ public class Company {
 	private int numberOfEmployees;
 
 	public void changeNumberOfEmployees(int delta) {
-		Assert.requires(numberOfEmployees + delta >= 0);
+		Assert.isTrue(numberOfEmployees + delta >= 0);
 		numberOfEmployees += delta;
 	}
 
@@ -297,9 +297,9 @@ public class Company {
 }
 ```
 
-- ’묻지 말고 말하라’ 라는 원칙을 준수하는데 도움이 된다.(조건을 확인하고 뭔가를 실행하지 말고 실행한다고 하기?)
-- 데이터와 해당 데이터에 대한 작업을 묶는다.
-- User 인스턴스는 직원 수를 변경하거나 특정 이메일이 회사 이메일인지 여부를 파악하도록 회사에 말하며, 원시 데이터를 묻지 않고 모든 작업을 자체적으로 수행한다.
+- ’묻지 말고 말하라’ 라는 원칙을 준수하는데 도움이 된다.
+  - 데이터와 해당 데이터에 대한 작업을 묶는다.
+  - User 인스턴스는 직원 수를 변경하거나 특정 이메일이 회사 이메일인지 여부를 파악하도록 회사에 말하며, 원시 데이터를 묻지 않고 모든 작업을 자체적으로 수행한다.
 
 ```java
 public class UserController {
@@ -313,7 +313,7 @@ public class UserController {
 		Object[] companyData = database.getCompany();
 		Company company = CompanyFactory.create(companyData);
 
-		user.chageEmail(newEmail, company);
+		user.changeEmail(newEmail, company);
 
 		database.saveCompany(company);
 		database.saveUser(user);
@@ -388,22 +388,24 @@ public void changing_email_from_non_corporate_to_corporate() {
 
 	sut.changeEmail("new@mycorp.com", company);
 
-	Assertion.equals(2, company.numberOfEmployees);
-	Assertion.equals("new@mycorp.com", sut.getEmail());
-	Assertion.equals(UserType.Employee, sut.getType();
+	Assertion.assertEquals(2, company.numberOfEmployees);
+	Assertion.assertEquals("new@mycorp.com", sut.getEmail());
+	Assertion.assertEquals(UserType.Employee, sut.getType();
 }
 ```
 
 ```java
-@InlineData("mycorp.com", "email@mycorp.com", true)
-@InlineData("mycorp.com", "email@gmail.com", false)
-@Test
+@ParameterizedTest
+@CsvSource({
+      "mycorp.com,email@mycorp.com,true",
+      "mycorp.com,email@gmail.com,false"
+})
 public void differentiates_a_corporate_email_from_non_corporate(String domain, String email, boolean expectedResult) {
 	Company sut = new Company(domain, 0);
 
 	boolean isEmailCorporate = sut.isEmailCorporate(email);
 
-	Assertion.equals(expectedResult, isEmailCorporate);
+	Assertion.assertEquals(expectedResult, isEmailCorporate);
 }
 ```
 
@@ -418,7 +420,7 @@ public void differentiates_a_corporate_email_from_non_corporate(String domain, S
 
 ```java
 public void changeNumberOfEmployees(int delta) {
-	Assert.requires(numberOfEmployees + delta >= 0);
+	Assert.isTrue(numberOfEmployees + delta >= 0);
 	numberOfEmployees += delta;
 }
 ```
@@ -435,9 +437,10 @@ public void changeNumberOfEmployees(int delta) {
 
 <img width="342" alt="스크린샷 2023-04-22 오후 3 54 27" src="https://user-images.githubusercontent.com/7659412/233800303-31b9a338-db2b-472f-b64d-96523b127cd5.png">
 
-- 단계가 명확하지 않은 경우가 많다.
-- 의사 결정 프로세스의 중간 결과를 기반으로 프로세스 외부 의존성에서 추가 데이터를 조회해야 할 수 있다.
-- 프로세스 외부 의존성에 쓰기 작업도 그 결과에 따라 달라진다.
+문제점
+  - 단계가 명확하지 않은 경우가 많다.
+  - 의사 결정 프로세스의 중간 결과를 기반으로 프로세스 외부 의존성에서 추가 데이터를 조회해야 할 수 있다.
+  - 프로세스 외부 의존성에 쓰기 작업도 그 결과에 따라 달라진다.
 
 <img width="377" alt="스크린샷 2023-04-22 오후 3 55 41" src="https://user-images.githubusercontent.com/7659412/233800306-8bbaff98-3093-4446-925f-9eaebbe84b0d.png">
 
@@ -509,12 +512,12 @@ public class UserController {
 
 	public String changeEmail(int userId, String newEmail) {
 		Object[] userData = database.getUserById(userId);
-		User user = UserFactory.crate(userData);
+		User user = UserFactory.create(userData);
 
 		Object[] companyData = database.getCompany();
 		Company company = CompanyFactory.create(companyData);
 
-		String error = user.chageEmail(newEmail, company);// 의사 결정
+		String error = user.changeEmail(newEmail, company);// 의사 결정
 		if(error != null) {
 			return error;
 		}
@@ -562,17 +565,17 @@ public class UserController {
 
 	public String changeEmail(int userId, String newEmail) {
 		Object[] userData = database.getUserById(userId);
-		User user = UserFactory.crate(userData);
+		User user = UserFactory.create(userData);
 
 		// 의사 결정
-		if(user.isEmailConfirmed) {
+		if(user.isEmailConfirmed()) {
 			return "Can't change a comfirmed email";
 		}
 
 		Object[] companyData = database.getCompany();
 		Company company = CompanyFactory.create(companyData);
 
-		user.chageEmail(newEmail, company);
+		user.changeEmail(newEmail, company);
 
 		database.saveCompany(company);
 		database.saveUser(user);
@@ -596,7 +599,7 @@ public class User {
 	private boolean isEmailConfirmed;
 
 	public void changeEmail(String newEmail, Company company) {
-		Assert.requires(canChangeEmail() == null);
+		Assert.isNull(canChangeEmail());
 
 		if(email == newEmail) {
 			return;
@@ -635,12 +638,12 @@ public class User {
 
 - 도메인 모델을 현재 상태로 만든 단계를 빼기 어려울 수 있다. 어플리케이션에서 정확히 무슨 일이 일어나는지 외부 시스템에 알려야 하기 때문에 이러한 단계를 아는 것이 중요할 수 있다. 컨트롤러에 이러한 책임이 있으면 더 복잡해진다.
 - 도메인 모델에서 중요한 변경 사항을 추적하고 비즈니스 연산이 완료된 후 해당 변경 사항을 프로세스 외부 의존성 호출로 변환한다.
-- 도메인 이벤트로 이러한 추적을 구현할 수 있다.
-- 도메인 이벤트는 애플리케이션 내에서 도메인 전문가에게 중요한 이벤트를 말한다. 도메인 전문가에게는 무엇으로 도메인 이벤트와 일반 이벤트를 구별하는지가 중요하다. 도메인 이벤트는 종종 시스템에서 발생하는 중요한 변경 사항을 외부 애플리케이션에 알리는 데 사용된다.
+  - 도메인 이벤트로 이러한 추적을 구현할 수 있다.
+  - 도메인 이벤트는 애플리케이션 내에서 도메인 전문가에게 중요한 이벤트를 말한다. 도메인 전문가에게는 무엇으로 도메인 이벤트와 일반 이벤트를 구별하는지가 중요하다. 도메인 이벤트는 종종 시스템에서 발생하는 중요한 변경 사항을 외부 애플리케이션에 알리는 데 사용된다.
 - CRM에서 메시지 버스에 메시지를 보내서 외부 시스템에 변경된 사용자 이메일을 알려줘야 한다. 지금 예제는 이메일이 변경되지 않아도 메시지를 보낸다.
-- 이메일이 같은지 체크하는 부분을 컨트롤러로 옮겨서 해결할 수 있지만 비즈니스 로직이 파편화되는 문제가 있다.
-- 이를 해결하기 위해 도메인 이벤트를 사용한다
-- 구현 관점에서 도메인 이벤트는 외부 시스템에 통보하는 데 필요한 데이터가 포함된 클래스이다.
+  - 이메일이 같은지 체크하는 부분을 컨트롤러로 옮겨서 해결할 수 있지만 비즈니스 로직이 파편화되는 문제가 있다.
+  - 이를 해결하기 위해 도메인 이벤트를 사용한다
+  - 구현 관점에서 도메인 이벤트는 외부 시스템에 통보하는 데 필요한 데이터가 포함된 클래스이다.
 
 ```java
 public class EmailChangedEvent {
@@ -654,7 +657,7 @@ public class EmailChangedEvent {
 
 ```java
 public void changeEmail(String newEmail, Company company) {
-	Assert.requires(canChangeEmail() == null);
+	Assert.isNull(canChangeEmail());
 
 	if(email == newEmail) {
 		return;
@@ -685,7 +688,7 @@ public void changeEmail(int userId, String newEmail) {
 	Object[] companyData = database.getCompany();
 	Company company = CompanyFactory.create(companyData);
 
-	user.chageEmail(newEmail, company);
+	user.changeEmail(newEmail, company);
 
 	database.saveCompany(company);
 	database.saveUser(user);
@@ -722,7 +725,7 @@ public void change_email_from_corporate_to_non_corporate() {
 }
 ```
 
-### 결론
+# 5. 결론
 
 - 외부 시스템에 대한 어플리케이션의 사이드 이펙트를 추상화 하는 것
 - 비즈니스 연산이 끝날 때까지 이러한 사이드 이펙트를 메모리에 둬서 추상화하고, 프로세스 외부 의존성 없이 단순한 단위 테스트로 테스트할 수 있다.
