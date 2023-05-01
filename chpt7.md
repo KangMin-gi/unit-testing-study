@@ -626,3 +626,38 @@ public String changeEmail(int userId, String newEmail) {
 }
 
 ```
+
+```java
+@Test  
+void changing_email_from_corporate_to_non_corporate() {  
+   Company company = new Company("mycorp.com", 1);  
+   var sut = new User(1, "user@mycorp.com", User.UserType.EMPLOYEE, false);  
+  
+   sut.changeEmail("new@gmail.com", company);  
+  
+   assertThat(company.getNumberOfEmployees()).isEqualTo(0);  
+   assertThat(sut.getEmail()).isEqualTo("new@gmail.com");  
+   assertThat(sut.getType()).isEqualTo(User.UserType.CUSTOMER);  
+   assertThat(sut.getEmailChangedEvents()).isEqualTo(new EmailChangedEvent(1, "new@gmail.com"));  
+}
+```
+
+## 결론
+- 외부 시스템에 대한 사이드이펙트를 추상화
+	- e.g. emailChangedEvent
+	- 덕분에 외부 의존성 없이 단순한 단위 테스트로 테스트할 수 있었음
+- 도메인 이벤트와 canExecute/execute 패턴으로 도메인 모델에 모든 의사 결정을 담을 수 있었음
+	- 그러나 현실적으로 비즈니스 로직 파편화가 생기는 상황이 있을 수 있음
+	- e.g. 컨트롤러에서 User uniqueness 검증
+		- 비즈니스 로직이 파편화되더라도 비즈니스 로직 - 오케스트레이션 분리하는 것은 의의가 있음. (단위 테스트 간소화)
+
+### 식별할 수 있는 동작
+- 클라이언트 목표 중 하나에 직접적인 연관이 있음
+- 외부 어플리케이션에서 볼 수 있는 프로세스 외부 의존성에서 사이드 이펙트가 발생
+
+![](attachments/스크린샷%202023-04-26%20오전%209.02.32.png)
+
+- 컨트롤러를 테스트할 때는 `changeEmail()` , `sendEmailChanged()` 두 메서드를 호출하는지 검증이 필요하다. 그러나 User 를 호출하는 것은 구현 세부사항이므로 검증하면 안 된다.
+- 한 단계 더 들어가서 User 를 테스트할 때는 컨트롤러가 클라이언트가 된다.  `changeEmail()` 은 클라이언트의 목표와 직접적인 연관이 있으므로 테스트한다. 하지만 User -> Company 로의 호출은 컨트롤러 관점에서 구현 세부사항에 해당한다. 따라서 Company 의 어떤 메소드를 호출하는지는 검증해서는 안된다.
+
+
