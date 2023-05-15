@@ -185,7 +185,7 @@ class BusSpy implements Bus {
       sendMessages.add(message);  
    }  
   
-   public BusSpy shoudSendNumberOfMessages(int number) {  
+   public BusSpy shouldSendNumberOfMessages(int number) {  
       Assertions.assertThat(sendMessages.size()).isEqualTo(number);  
       return this;   }  
   
@@ -212,7 +212,7 @@ void changing_email_from_corporate_to_non_corporate() {
    // ...
 
 
-   busSpy.shoudSendNumberOfMessages(1)  
+   busSpy.shouldSendNumberOfMessages(1)  
       .withEmailChangedMessage(user.getUserId(), "new@gmail.com");  
 }
 ```
@@ -231,13 +231,14 @@ void changing_email_from_corporate_to_non_corporate() {
 - 목은 통합 테스트만을 위한 것이며 단위 테스트에서는 목을 사용하면 안 됨
 - 도메인 모델 테스트 -> 단위테스트 -> Mock 사용 (X)
 - 컨트롤러 테스트 -> 통합테스트 -> Mock 사용 (O)
-
+- Q. 도메인 - 컨트롤러 기준이 궁금하다. 실무 코드와 연관시킨다면?
 ### 테스트당 목이 하나일 필요는 없음
 - 테스트의 '단위' 는 코드 단위가 아니라 동작 단위.
 - 동작 단위를 검증하는데 필요한 Mock 수는 테스트 당 하나일 필요가 없음. unmanaged 의존성 숫자만큼 Mock 을 두면 됨
 
 ### 호출횟수 검증하기
 - 예상하는 호출이 있는지 뿐만 아니라 예상치 못한 호출이 없는지 또한 검증해야 하므로 호출횟수를 정확히 검증하는 것이 좋다
+- `Mockito.verifyNoMoreInteractions(mock)`
 
 
 ### Only mock types that you own
@@ -248,5 +249,6 @@ void changing_email_from_corporate_to_non_corporate() {
 	- 라이브러리에서 필요한 기능만 노출 가능
 	- 프로젝트 도메인 언어 활용 가능
 - e.g. CRM 예제에서 BusInterface
+- 단, 프로세스 내부 의존성, 인메모리 의존성, managed 의존성은 어댑터를 만들 필요가 없다. 
 
 
